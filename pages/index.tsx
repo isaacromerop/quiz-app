@@ -4,6 +4,8 @@ import Head from "next/head";
 import QuestionCard from "../components/QuestionCard";
 import { fetchQuizQuestions, Difficulty, QuestionState } from "../api";
 
+import { GlobalStyle, Wrapper } from "./index.styles";
+
 const TOTAL_QUESTIONS: number = 10;
 
 export type AnswerObject = {
@@ -62,45 +64,48 @@ export default function Home() {
     }
   };
   return (
-    <div>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Catamaran:wght@700&family=Fascinate+Inline&display=swap"
-        />
-      </Head>
-
-      <main className="app">
-        <h1>Quiz App - Test your knowledge</h1>
-        {gameOver || userAnswers.length === TOTAL_QUESTIONS ? (
-          <button className="start" onClick={startTrivia}>
-            Start now
-          </button>
-        ) : null}
-        {!gameOver ? <p className="score">Score:{score}</p> : null}
-        {loading && <p>Loading Questions...</p>}
-        {!loading && !gameOver && (
-          <QuestionCard
-            questionNo={number + 1}
-            totalQuestions={TOTAL_QUESTIONS}
-            question={questions[number].question}
-            answers={questions[number].answers}
-            userAnswer={userAnswers ? userAnswers[number] : undefined}
-            callback={checkAnswer}
+    <>
+      <GlobalStyle />
+      <div>
+        <Head>
+          <title>Create Next App</title>
+          <link rel="icon" href="/favicon.ico" />
+          <link rel="preconnect" href="https://fonts.gstatic.com" />
+          <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Catamaran:wght@700&family=Fascinate+Inline&display=swap"
           />
-        )}
-        {!gameOver &&
-        !loading &&
-        userAnswers.length === number + 1 &&
-        number !== TOTAL_QUESTIONS - 1 ? (
-          <button className="next" onClick={nextQuestion}>
-            Next question
-          </button>
-        ) : null}
-      </main>
-    </div>
+        </Head>
+
+        <Wrapper className="app">
+          <h1>Quiz App</h1>
+          {gameOver || userAnswers.length === TOTAL_QUESTIONS ? (
+            <button className="start" onClick={startTrivia}>
+              Start now
+            </button>
+          ) : null}
+          {!gameOver ? <p className="score">Score:{score}</p> : null}
+          {loading && <p>Loading Questions...</p>}
+          {!loading && !gameOver && (
+            <QuestionCard
+              questionNo={number + 1}
+              totalQuestions={TOTAL_QUESTIONS}
+              question={questions[number].question}
+              answers={questions[number].answers}
+              userAnswer={userAnswers ? userAnswers[number] : undefined}
+              callback={checkAnswer}
+            />
+          )}
+          {!gameOver &&
+          !loading &&
+          userAnswers.length === number + 1 &&
+          number !== TOTAL_QUESTIONS - 1 ? (
+            <button className="next" onClick={nextQuestion}>
+              Next question
+            </button>
+          ) : null}
+        </Wrapper>
+      </div>
+    </>
   );
 }
